@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springapp
+  namespace: dev 
+spec:
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: springapp
+  template:
+    metadata:
+      labels:
+        app: springapp
+    spec:  
+      containers:
+      - name: springapp
+        image: ravi955/springapp
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGO_DB_HOSTNAME
+          value: mongosvc
+        - name: MONGO_DB_USERNAME
+          value: devdb
+        - name: MONGO_DB_PASSWORD
+          value: devdb@123
+            #resources:
+            #requests:
+            #cpu: 300m
+            #memory: 256Mi
+            #limits:
+            #cpu: 500m  
+            #memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springappsvc
+  namespace: dev
+spec:
+  type: NodePort
+  selector:
+    app: springapp
+  ports:
+  - port: 80
+    targetPort: 8080
+
+
