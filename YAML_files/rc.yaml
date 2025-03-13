@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nginxrc
+  namespace: dev
+spec:
+  replicas: 2
+  selector:
+    app: nginx
+  template:
+    metadata:
+      name: nginxrcpod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginxrccont
+          image: ravi955/nginx
+          ports:
+            - containerPort: 80
+
